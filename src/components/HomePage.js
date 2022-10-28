@@ -34,10 +34,10 @@ function HomePage() {
                 <span className='block xl:inline'>
                   Local Convenience {' '}
                 </span>
-                <span className='block text-black-300 xl:inline'>Store ltd</span>
+                <span className='block text-black-300 xl:inline'>Store Ltd</span>
               </h1>
               <p className='max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl'>
-                A convenience storefor a small retail business that stocks a
+                A convenience store for a small retail business that stocks a
                 range of everyday items such as coffee, groceries, snack foods,
                 confectionery, soft drinks, ice creams, etc.
               </p>
