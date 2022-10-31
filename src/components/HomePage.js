@@ -10,6 +10,10 @@ function HomePage() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const [product, setProduct] = useState([])
+
+  
   return (
     <>
       <div className='relative bg-red-100 overflow-hidden'>
@@ -71,9 +75,9 @@ function HomePage() {
           role='list'
           className='grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
         >
+          {/* <PictureForm />
           <PictureForm />
-          <PictureForm />
-          <PictureForm />
+          <PictureForm /> */}
           <PictureForm />
         </ul>
       </div>

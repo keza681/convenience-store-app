@@ -118,11 +118,7 @@ function ProductModal({ open, handleClose, handleOpen }) {
                     <h2 className='text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl'>
                       Add New Product
                     </h2>
-                    <p className='mt-4 text-lg leading-6 text-gray-500'>
-                      This is a global marketplace where various products are
-                      posted in order to reach thousands of people. You simply
-                      cannot wait. Add your product right now, not tomorrow.{" "}
-                    </p>
+                    
                   </div>
                   <div className='mt-12'>
                     <form
@@ -131,7 +127,7 @@ function ProductModal({ open, handleClose, handleOpen }) {
                       action='#'
                       method='POST'
                       className='grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8'
-                    >
+                     >
                       <div className='sm:col-span-2'>
                         <label
                           for='name'
@@ -282,6 +278,7 @@ function ProductModal({ open, handleClose, handleOpen }) {
 
                       <div className='sm:col-span-2'>
                         <button
+                          onSubmit={handleSudmit}
                           type='submit'
                           className='w-full inline-flex items-center justify-center px-6 py-3 text-2xl font-medium rounded-md text-white bg-green-400 hover:bg-green-300'
                         >
