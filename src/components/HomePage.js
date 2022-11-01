@@ -11,9 +11,6 @@ function HomePage() {
     setOpen(false);
   };
 
-  const [product, setProduct] = useState([])
-
-  
   return (
     <>
       <div className='relative bg-red-100 overflow-hidden'>
