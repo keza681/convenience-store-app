@@ -1,66 +1,35 @@
 import React, { useState } from "react";
-import PictureForm from "./PictureCard";
+import axios from "axios";
 
-function ProductModal({ open, handleClose, handleOpen }) {
+function ProductModal({ open, handleClose, handleOpen, props }) {
   const [form, setForm] = useState({
-    useCategory: "",
-    usePrice: "",
-    useTitle: "",
-    useDescription: "",
-    useDtae: "",
-    usePicture: ""
-  })
+    title: "",
+    price: "",
+    description: "",
+    image: ""
+  });
+  const [image, setImage] = useState("")
 
-  const categoryHandler = (e) => {
-    setForm((prevState) => {
-      return ({ ...prevState, useCategory: e.target.value })
-    })
-    console.log(form);
+  const formHandler = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value })
   }
 
-  const priceHandler = (e) => {
-    setForm((prevState) => {
-      return ({ ...prevState, usePrice: e.target.value })
-    })
-    console.log(form);
+  const handleSubmit = async (e) => {
+    const formData = new FormData();
+    formData.append("image", image);
+    formData.append("title", form.title);
+    formData.append("price", form.price)
+    await axios.post("http://localhost:5003/products", formData)
+    props.setData([...props.data, form])
+    setForm({
+      title: "",
+      price: "",
+      description: "",
+      image: ""
+    });
   }
-
-  const descriptionHandle = (e) => {
-    setForm((prevState) => {
-      return ({ ...prevState, useDescription: e.target.value })
-    })
-    console.log(form);
-  }
-
-  const titleHandleChange = (e) => {
-    setForm((prevState) => {
-      return ({ ...prevState, useTitle: e.target.value })
-    })
-    console.log(form);
-  }
-  const dateHandler = (e) => {
-    setForm((prevState) => {
-      return ({ ...prevState, useDtae: e.target.value })
-    })
-    console.log(form);
-  }
-  const pictureHandler = (e) => {
-    setForm((prevState) => {
-      return ({ ...prevState, usePicture: e.target.value })
-    })
-    console.log(form);
-  }
-  const handleSudmit = (e) => {
-    e.preventDefault()
-    const saveProduct = {
-      category: form.useCategory,
-      price: form.usePrice,
-      description: form.useDescription,
-      title: form.useTitle,
-      date: form.useDtae,
-      picture: form.usePicture
-    }
-    console.log('SAVE PRODUCT FORM ===', saveProduct);
+  const getChangeImage = (e) => {
+    setImage(e.target.files[0])
   }
 
   return (
@@ -118,16 +87,13 @@ function ProductModal({ open, handleClose, handleOpen }) {
                     <h2 className='text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl'>
                       Add New Product
                     </h2>
-                    
+
                   </div>
                   <div className='mt-12'>
                     <form
-                      onSubmit={handleSudmit}
                       name='addProduct'
-                      action='#'
-                      method='POST'
                       className='grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8'
-                     >
+                    >
                       <div className='sm:col-span-2'>
                         <label
                           for='name'
@@ -141,7 +107,7 @@ function ProductModal({ open, handleClose, handleOpen }) {
                             name='name'
                             id='name'
                             autocomplete='name'
-                            onChange={titleHandleChange}
+                            onChange={formHandler}
                             value={form.useTitle}
                             className='py-3 px-4 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-md'
                           />
@@ -160,100 +126,30 @@ function ProductModal({ open, handleClose, handleOpen }) {
                             id='price'
                             name='price'
                             type='number'
-                            onChange={priceHandler}
-                            value={form.usePrice}
+                            onChange={formHandler}
+                            value={form.price}
                             autocomplete='price'
                             className='py-3 px-4 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-md'
                           />
                         </div>
                       </div>
+
                       <div className='sm:col-span-2'>
                         <label
-                          for='category'
+                          for='price'
                           className='block text-sm font-medium text-gray-700'
                         >
-                          Category
-                        </label>
-                        <div className='mt-1'>
-                          <select
-                            id='category'
-                            name='category'
-                            type='text'
-                            autocomplete='category'
-                            onChange={categoryHandler}
-                            value={form.useCategory}
-                            className='py-3 px-4 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-md'
-                          >
-                            <option value='men'>Men</option>
-                            <option value='women'>Women</option>
-                            <option value='kids'>Kids</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div className='sm:col-span-2'>
-                        <label
-                          for='date'
-                          className='block text-sm font-medium text-gray-700'
-                        >
-                          Date
+                          Image
                         </label>
                         <div className='mt-1'>
                           <input
-                            id='date'
-                            name='date'
-                            type='date'
-                            autocomplete='date'
-                            onChange={dateHandler}
-                            value={form.useDtae}
+                            id='image url'
+                            name='image'
+                            type='file'
+                            onChange={getChangeImage}
+                            autocomplete='image'
                             className='py-3 px-4 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-md'
                           />
-                        </div>
-                      </div>
-                      <div className='sm:col-span-2'>
-                        <div className='sm:col-span-6'>
-                          <label
-                            for='product-photo'
-                            className='block text-sm font-medium text-gray-700'
-                          >
-                            Product photo{" "}
-                          </label>
-                          <div className='mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md'>
-                            <div className='space-y-1 text-center'>
-                              <svg
-                                className='mx-auto h-12 w-12 text-gray-400'
-                                stroke='currentColor'
-                                fill='none'
-                                viewBox='0 0 48 48'
-                                aria-hidden='true'
-                              >
-                                <path
-                                  d='M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02'
-                                  stroke-width='2'
-                                  stroke-linecap='round'
-                                  stroke-linejoin='round'
-                                />
-                              </svg>
-                              <div className='flex text-sm text-gray-600'>
-                                <label
-                                  for='photo'
-                                  className='relative cursor-pointer bg-white rounded-md font-medium text-lg text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500'
-                                >
-                                  <span>Upload a file</span>
-                                  <input
-                                    id='photo'
-                                    name='photo'
-                                    type='file'
-                                    onChange={pictureHandler}
-                                    value={form.usePicture}
-                                    className='sr-only'
-                                  />
-                                </label>
-                              </div>
-                              <p className='text-gray-500'>
-                                PNG or JPG up to 10MB
-                              </p>
-                            </div>
-                          </div>
                         </div>
                       </div>
 
@@ -266,23 +162,25 @@ function ProductModal({ open, handleClose, handleOpen }) {
                         </label>
                         <div className='mt-1'>
                           <textarea
-                            id='desrciption'
-                            name='desrciption'
-                            rows='4'
-                            onChange={descriptionHandle}
-                            value={form.useDescription}
+                            id='image url'
+                            name='description'
+                            type='text'
+                            placeholder='enter the description'
+                            onChange={formHandler}
+                            value={form.description}
+                            autocomplete='description'
                             className='py-3 px-4 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-md'
-                          ></textarea>
+                          />
                         </div>
                       </div>
 
                       <div className='sm:col-span-2'>
                         <button
-                          onSubmit={handleSudmit}
+                          onClick={handleSubmit}
                           type='submit'
                           className='w-full inline-flex items-center justify-center px-6 py-3 text-2xl font-medium rounded-md text-white bg-green-400 hover:bg-green-300'
                         >
-                          Submit
+                          Add product
                         </button>
                       </div>
                     </form>

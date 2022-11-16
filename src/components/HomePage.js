@@ -1,15 +1,26 @@
 import React, { useState } from "react";
-import PictureForm from "./PictureCard";
 import ProductModal from "./ProductModal";
+import axios from 'axios'
+import SingleCard from "./singleCard";
 
 function HomePage() {
   const [open, setOpen] = useState(false);
+  const [productList, setProductList] = useState([]);
   const handleOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
   };
+
+
+  const fetchProducts = async () => {
+    const response = await axios.get("http://localhost:5003/products");
+    setProductList(response.data.data);
+  }
+  if (productList.length < 1) {
+    fetchProducts();
+  }
 
   return (
     <>
@@ -63,20 +74,11 @@ function HomePage() {
       </div>
 
       {open && (
-        <ProductModal handleClose={handleClose} handleOpen={handleOpen} />
+        <ProductModal handleClose={handleClose} handleOpen={handleOpen} setData={setProductList} data={productList} />
       )}
 
-      <div className='max-w-7xl mx-auto sm:px-6 p-4'>
-        <ul
-          id='productsListing'
-          role='list'
-          className='grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
-        >
-          {/* <PictureForm />
-          <PictureForm />
-          <PictureForm /> */}
-          <PictureForm />
-        </ul>
+      <div className='p-8 bg-[#f3f3f3]'>
+        <SingleCard data={productList} />
       </div>
 
 
